@@ -1,6 +1,9 @@
 
   # Dashboard Administrativo InfraTL
 
+  Colaboradores do projeto (FrontEnd) - Gabriel da Silva Marques, Nathan Mansur Justino Valentim, Ryan Hadas, Lucas Volpato
+
+
   This is a code bundle for Dashboard Administrativo InfraTL. The original project is available at https://www.figma.com/design/XaDpVnR2julIQmpLxCHQkw/Dashboard-Administrativo-InfraTL.
 
   Link for Docs https://docs.google.com/document/d/15U57iVbvhLzweJP308AS0fOXjm6nE_4ssmr-m2cF8i8/edit?tab=t.0
