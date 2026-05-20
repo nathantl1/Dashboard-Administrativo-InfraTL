@@ -8,6 +8,7 @@ import { PasswordResetSuccessPage } from "./components/PasswordResetSuccessPage"
 import { AppShell } from "./components/AppShell";
 import { DashboardLayout } from "./components/DashboardLayout";
 import { OcorrenciasPage } from "./components/OcorrenciasPage";
+import { CadastroOcorrenciaPage } from "./components/CadastroOcorrenciaPage";
 import { OrdensServicoPage } from "./components/OrdensServicoPage";
 import { RelatoriosPage } from "./components/RelatoriosPage";
 import { ConfiguracoesPage } from "./components/ConfiguracoesPage";
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: DashboardLayout },
       { path: "ocorrencias", Component: OcorrenciasPage },
+      { path: "ocorrencias/nova", Component: CadastroOcorrenciaPage }, // ← NOVA ROTA
       { path: "ordens", Component: OrdensServicoPage },
       { path: "relatorios", Component: RelatoriosPage },
       { path: "configuracoes", Component: ConfiguracoesPage },

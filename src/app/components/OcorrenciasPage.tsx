@@ -1,23 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import {
-  Search,
-  SlidersHorizontal,
-  Download,
-  Plus,
-  MapPin,
-  Calendar,
-  ChevronDown,
-  Eye,
-  MoreHorizontal,
-  ArrowUpDown,
-  AlertTriangle,
-  Lightbulb,
-  Trash2,
-  TreePine,
-  TrafficCone,
-  Droplets,
-  LayoutGrid,
-  List,
+  Search, Download, Plus, MapPin, Calendar,
+  Eye, MoreHorizontal, ArrowUpDown, AlertTriangle,
+  Lightbulb, Trash2, TreePine, TrafficCone, Droplets,
+  LayoutGrid, List,
 } from "lucide-react";
 
 type Status = "Pendente" | "Em Execucao" | "Concluido" | "Cancelado";
@@ -81,6 +68,7 @@ function PriorityBadge({ priority }: { priority: Priority }) {
 }
 
 export function OcorrenciasPage() {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<string>("Todos");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const filters = ["Todos", "Pendente", "Em Execucao", "Concluido", "Cancelado"];
@@ -106,7 +94,10 @@ export function OcorrenciasPage() {
             <Download size={16} />
             Exportar
           </button>
-          <button className="h-[40px] px-4 bg-[#3b82f6] rounded-[10px] flex items-center gap-2 hover:bg-[#2563eb] transition-colors text-[14px] font-medium text-white shadow-sm shadow-[#3b82f6]/20">
+          <button
+            onClick={() => navigate("/dashboard/ocorrencias/nova")}
+            className="h-[40px] px-4 bg-[#3b82f6] rounded-[10px] flex items-center gap-2 hover:bg-[#2563eb] transition-colors text-[14px] font-medium text-white shadow-sm shadow-[#3b82f6]/20"
+          >
             <Plus size={16} />
             Nova Ocorrencia
           </button>
@@ -116,7 +107,6 @@ export function OcorrenciasPage() {
       {/* Filters Bar */}
       <div className="bg-white rounded-[14px] border border-[#e5e7eb] p-4 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-          {/* Search */}
           <div className="relative flex-1 max-w-[400px]">
             <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#99a1af]" />
             <input
@@ -126,7 +116,6 @@ export function OcorrenciasPage() {
             />
           </div>
 
-          {/* Status Tabs */}
           <div className="flex items-center gap-1 bg-[#f3f4f6] rounded-[8px] p-1">
             {filters.map((f) => (
               <button
@@ -143,27 +132,20 @@ export function OcorrenciasPage() {
             ))}
           </div>
 
-          {/* View Mode Toggle */}
           <div className="flex items-center gap-1 bg-[#f3f4f6] rounded-[8px] p-1">
             <button
               onClick={() => setViewMode("grid")}
               className={`w-[34px] h-[30px] rounded-[6px] flex items-center justify-center transition-all ${
-                viewMode === "grid"
-                  ? "bg-white text-[#3b82f6] shadow-sm"
-                  : "text-[#6a7282] hover:text-[#364153]"
+                viewMode === "grid" ? "bg-white text-[#3b82f6] shadow-sm" : "text-[#6a7282] hover:text-[#364153]"
               }`}
-              title="Visualizar em cards"
             >
               <LayoutGrid size={16} />
             </button>
             <button
               onClick={() => setViewMode("list")}
               className={`w-[34px] h-[30px] rounded-[6px] flex items-center justify-center transition-all ${
-                viewMode === "list"
-                  ? "bg-white text-[#3b82f6] shadow-sm"
-                  : "text-[#6a7282] hover:text-[#364153]"
+                viewMode === "list" ? "bg-white text-[#3b82f6] shadow-sm" : "text-[#6a7282] hover:text-[#364153]"
               }`}
-              title="Visualizar em lista"
             >
               <List size={16} />
             </button>
@@ -171,32 +153,21 @@ export function OcorrenciasPage() {
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
+      {/* Grid View */}
       {viewMode === "grid" && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map((item) => {
             const CatIcon = item.categoryIcon;
-            const statusStyle = statusConfig[item.status];
-            const priorityStyle = priorityConfig[item.priority];
-            
             return (
-              <div
-                key={item.id}
-                className="bg-white rounded-[14px] border border-[#e5e7eb] p-5 hover:shadow-md hover:border-[#d1d5db] transition-all group"
-              >
-                {/* Card Header */}
+              <div key={item.id} className="bg-white rounded-[14px] border border-[#e5e7eb] p-5 hover:shadow-md hover:border-[#d1d5db] transition-all group">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 rounded-[10px] bg-gradient-to-br from-[#3b82f6]/10 to-[#3b82f6]/5 flex items-center justify-center shrink-0">
                       <CatIcon size={20} className="text-[#3b82f6]" />
                     </div>
                     <div>
-                      <p className="text-[#6a7282] text-[11px] font-medium uppercase tracking-[0.5px] mb-0.5">
-                        Ocorrência
-                      </p>
-                      <p className="text-[#101828] text-[16px] font-semibold leading-[20px]">
-                        {item.id}
-                      </p>
+                      <p className="text-[#6a7282] text-[11px] font-medium uppercase tracking-[0.5px] mb-0.5">Ocorrência</p>
+                      <p className="text-[#101828] text-[16px] font-semibold leading-[20px]">{item.id}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -208,19 +179,13 @@ export function OcorrenciasPage() {
                     </button>
                   </div>
                 </div>
-
-                {/* Category */}
                 <div className="mb-4">
-                  <p className="text-[#364153] text-[15px] font-semibold leading-[20px] mb-1">
-                    {item.category}
-                  </p>
+                  <p className="text-[#364153] text-[15px] font-semibold leading-[20px] mb-1">{item.category}</p>
                   <div className="flex items-start gap-1.5 text-[#6a7282] text-[13px] leading-[18px]">
                     <MapPin size={14} className="text-[#99a1af] shrink-0 mt-0.5" />
                     <span className="line-clamp-2">{item.address}, {item.neighborhood}</span>
                   </div>
                 </div>
-
-                {/* Metadata */}
                 <div className="space-y-2.5 mb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
@@ -229,14 +194,11 @@ export function OcorrenciasPage() {
                     </div>
                     <span className="text-[#364153] text-[13px] font-medium">{item.date}</span>
                   </div>
-                  
                   <div className="flex items-center justify-between">
                     <span className="text-[#6a7282] text-[12px]">Autor</span>
                     <span className="text-[#364153] text-[13px] font-medium">{item.reporter}</span>
                   </div>
                 </div>
-
-                {/* Footer - Status & Priority */}
                 <div className="pt-4 border-t border-[#e5e7eb] flex items-center justify-between gap-2">
                   <StatusBadge status={item.status} />
                   <PriorityBadge priority={item.priority} />
@@ -247,61 +209,37 @@ export function OcorrenciasPage() {
         </div>
       )}
 
-      {/* Table List View */}
+      {/* List View */}
       {viewMode === "list" && (
         <div className="bg-white rounded-[14px] border border-[#e5e7eb] overflow-hidden">
-          {/* Table Header */}
           <div className="hidden lg:grid grid-cols-[80px_1fr_1fr_120px_100px_100px_100px_48px] gap-3 px-4 py-3 border-b border-[#e5e7eb] bg-[#f9fafb]">
             {["ID", "Categoria", "Endereco", "Data", "Status", "Prioridade", "Autor", ""].map((h, i) => (
               <div key={i} className="flex items-center gap-1">
-                <span className="text-[#6a7282] text-[11px] font-semibold leading-[16px] uppercase tracking-[0.5px]">{h}</span>
-                {h && h !== "" && <ArrowUpDown size={12} className="text-[#99a1af]" />}
+                <span className="text-[#6a7282] text-[11px] font-semibold uppercase tracking-[0.5px]">{h}</span>
+                {h && <ArrowUpDown size={12} className="text-[#99a1af]" />}
               </div>
             ))}
           </div>
-
-          {/* Table Rows */}
           <div className="divide-y divide-[#e5e7eb]">
             {filtered.map((item) => {
               const CatIcon = item.categoryIcon;
               return (
-                <div
-                  key={item.id}
-                  className="grid grid-cols-1 lg:grid-cols-[80px_1fr_1fr_120px_100px_100px_100px_48px] gap-2 lg:gap-3 px-4 py-3.5 hover:bg-[#f9fafb]/60 transition-colors items-center"
-                >
-                  {/* ID */}
+                <div key={item.id} className="grid grid-cols-1 lg:grid-cols-[80px_1fr_1fr_120px_100px_100px_100px_48px] gap-2 lg:gap-3 px-4 py-3.5 hover:bg-[#f9fafb]/60 transition-colors items-center">
                   <span className="text-[#101828] text-[13px] font-semibold">{item.id}</span>
-
-                  {/* Category */}
                   <div className="flex items-center gap-2.5">
                     <div className="w-7 h-7 rounded-[8px] bg-[#f3f4f6] flex items-center justify-center shrink-0">
                       <CatIcon size={14} className="text-[#6a7282]" />
                     </div>
                     <span className="text-[#364153] text-[13px] font-medium truncate">{item.category}</span>
                   </div>
-
-                  {/* Address */}
                   <div className="flex items-center gap-1.5 min-w-0">
                     <MapPin size={13} className="text-[#99a1af] shrink-0" />
                     <span className="text-[#4a5565] text-[13px] truncate">{item.address} - {item.neighborhood}</span>
                   </div>
-
-                  {/* Date */}
-                  <div className="flex items-center gap-1.5">
-                    <Calendar size={13} className="text-[#99a1af] shrink-0 hidden lg:block" />
-                    <span className="text-[#6a7282] text-[13px]">{item.date}</span>
-                  </div>
-
-                  {/* Status */}
+                  <span className="text-[#6a7282] text-[13px]">{item.date}</span>
                   <StatusBadge status={item.status} />
-
-                  {/* Priority */}
                   <PriorityBadge priority={item.priority} />
-
-                  {/* Reporter */}
                   <span className="text-[#6a7282] text-[13px]">{item.reporter}</span>
-
-                  {/* Actions */}
                   <div className="flex items-center gap-1 justify-end">
                     <button className="w-7 h-7 rounded-[6px] flex items-center justify-center hover:bg-gray-100 transition-colors">
                       <Eye size={15} className="text-[#99a1af]" />
