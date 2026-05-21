@@ -1,6 +1,6 @@
 # InfraTL — Dashboard Administrativo
 
-Interface web responsiva para gerenciamento de ocorrências de infraestrutura urbana do município de **Três Lagoas - MS**, desenvolvida como projeto acadêmico.
+Interface web responsiva para gerenciamento de ocorrências de infraestrutura urbana, desenvolvida como projeto acadêmico.
 
 ---
 
@@ -78,7 +78,7 @@ Para rodar o back-end localmente, consulte o repositório da API e siga as instr
 
 ---
 
-## 👥 Equipe
+## Equipe
 
 Projeto (frontend) desenvolvido em grupo pelos alunos:
 - Gabriel Marques
