@@ -1,10 +1,19 @@
 import { Search, SlidersHorizontal, Bell, Menu } from "lucide-react";
+import { useAuth } from "../useAuth";
 
 interface HeaderProps {
   onMenuToggle: () => void;
 }
 
 export function Header({ onMenuToggle }: HeaderProps) {
+  const { usuario } = useAuth();
+
+  const primeiroNome = usuario?.nome?.split(" ")[0] ?? "Usuário";
+  const tipoUsuario = usuario?.tipo_usuario === "Admin" ? "Administrador" : "Cidadão";
+  const iniciais = usuario?.nome
+    ? usuario.nome.split(" ").slice(0, 2).map((n: string) => n[0]).join("").toUpperCase()
+    : "??";
+
   return (
     <header
       className="bg-white border-b border-[#e5e7eb] px-4 py-4 flex items-center justify-between gap-4"
@@ -21,10 +30,7 @@ export function Header({ onMenuToggle }: HeaderProps) {
       {/* Search + Filters */}
       <div className="flex items-center gap-3 flex-1 max-w-[560px]">
         <div className="relative flex-1">
-          <Search
-            size={20}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#99a1af]"
-          />
+          <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#99a1af]" />
           <input
             type="text"
             placeholder="Buscar ocorrencias, enderecos, categorias..."
@@ -51,21 +57,18 @@ export function Header({ onMenuToggle }: HeaderProps) {
         <div className="hidden sm:flex items-center gap-3 pl-3 border-l border-[#e5e7eb]">
           <div className="text-right">
             <p className="text-[#101828] text-[14px] font-medium leading-[20px] tracking-[-0.15px]">
-              Admin Municipal
+              {primeiroNome}
             </p>
             <p className="text-[#6a7282] text-[12px] leading-[16px]">
-              Administrador
+              {tipoUsuario}
             </p>
           </div>
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(135deg, #3b82f6 0%, #22c55e 100%)",
-            }}
+            style={{ backgroundImage: "linear-gradient(135deg, #3b82f6 0%, #22c55e 100%)" }}
           >
             <span className="text-white text-[14px] font-medium leading-[20px] tracking-[-0.15px]">
-              AM
+              {iniciais}
             </span>
           </div>
         </div>

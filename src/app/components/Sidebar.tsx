@@ -1,14 +1,9 @@
 import { useLocation, useNavigate } from "react-router";
 import {
-  LayoutDashboard,
-  AlertTriangle,
-  ClipboardList,
-  FileText,
-  Settings,
-  X,
-  LogOut,
+  LayoutDashboard, AlertTriangle, ClipboardList,
+  FileText, Settings, X, LogOut,
 } from "lucide-react";
-import logoImg from "figma:asset/b156916a241399c8d5c27c4d2b23c0e1e09fa077.png";
+import { useAuth } from "../useAuth";
 
 const navItems = [
   { label: "Visao Geral", icon: LayoutDashboard, path: "/dashboard" },
@@ -26,19 +21,22 @@ interface SidebarProps {
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const isActive = (path: string) => {
     if (path === "/dashboard") return location.pathname === "/dashboard";
     return location.pathname.startsWith(path);
   };
 
+  const handleLogout = () => {
+    onClose();
+    logout();
+  };
+
   return (
     <>
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={onClose} />
       )}
 
       <aside
@@ -54,11 +52,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               className="flex items-center gap-3 cursor-pointer"
               onClick={() => { navigate("/dashboard"); onClose(); }}
             >
-              <img
-                src={logoImg}
-                alt="InfraTL Logo"
-                className="w-10 h-10 rounded-[10px] object-contain bg-white/10 p-0.5"
-              />
+              <div className="w-10 h-10 rounded-[10px] bg-[#3b82f6] flex items-center justify-center">
+                <span className="text-white text-[16px] font-bold">IL</span>
+              </div>
               <div>
                 <h1 className="text-[#f9fafb] text-[18px] font-semibold leading-[28px] tracking-[-0.44px]">
                   InfraTL
@@ -68,10 +64,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 </p>
               </div>
             </div>
-            <button
-              onClick={onClose}
-              className="lg:hidden text-[#f9fafb] opacity-70 hover:opacity-100"
-            >
+            <button onClick={onClose} className="lg:hidden text-[#f9fafb] opacity-70 hover:opacity-100">
               <X size={20} />
             </button>
           </div>
@@ -107,7 +100,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Footer */}
         <div className="border-t border-[#374151] px-4 py-3 space-y-2">
           <button
-            onClick={() => navigate("/")}
+            onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 h-10 rounded-[10px] text-[rgba(249,250,251,0.5)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[rgba(249,250,251,0.7)] transition-colors"
           >
             <LogOut size={18} strokeWidth={1.67} />

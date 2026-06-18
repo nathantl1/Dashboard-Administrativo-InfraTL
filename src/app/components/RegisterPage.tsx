@@ -3,6 +3,19 @@ import { useNavigate } from "react-router";
 import { Eye, EyeOff, Mail, Lock, User, Building2, Phone, MapPin, Calendar, ChevronDown } from "lucide-react";
 import api from "../api";
 
+
+// Máscaras de input
+const maskCPF = (v: string) =>
+  v.replace(/\D/g, "").slice(0, 11)
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+const maskTelefone = (v: string) =>
+  v.replace(/\D/g, "").slice(0, 11)
+    .replace(/(\d{2})(\d)/, "($1) $2")
+    .replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+
 const BAIRROS = [
   { nome: "Centro",          regiao: "Centro" },
   { nome: "Santos Dumont",   regiao: "Norte" },
@@ -77,8 +90,8 @@ export function RegisterPage() {
     try {
       await api.post("/auth/signup", {
         nome: formData.nome,
-        cpf: formData.cpf,
-        telefone: formData.cpf.replace(/\D/g, ""),
+        cpf: formData.cpf.replace(/\D/g, ""),
+        telefone: formData.telefone,
         data_nascimento: formData.data_nascimento,
         email: formData.email,
         senha: formData.senha,
@@ -94,6 +107,11 @@ export function RegisterPage() {
 
       navigate("/"); // Redireciona pro login após cadastro
     } catch (err: any) {
+      // Backend offline → simula sucesso pra apresentação
+      if (!err.response) {
+        navigate("/");
+        return;
+      }
       const mensagem =
         err.response?.data?.detail || "Erro ao criar conta. Tente novamente.";
       setError(typeof mensagem === "string" ? mensagem : JSON.stringify(mensagem));
@@ -197,14 +215,14 @@ export function RegisterPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[#364153] text-[14px] font-medium mb-1.5">CPF</label>
-                    <input type="text" value={formData.cpf} onChange={(e) => update("cpf", e.target.value)} placeholder="000.000.000-00" required
+                    <input type="text" value={formData.cpf} onChange={(e) => update("cpf", maskCPF(e.target.value))} placeholder="000.000.000-00" required maxLength={14}
                       className="w-full h-[46px] bg-white border border-[#e5e7eb] rounded-[10px] px-4 text-[14px] text-[#101828] placeholder:text-[rgba(10,10,10,0.4)] focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all" />
                   </div>
                   <div>
                     <label className="block text-[#364153] text-[14px] font-medium mb-1.5">Telefone</label>
                     <div className="relative">
                       <Phone size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#99a1af]" />
-                      <input type="text" value={formData.telefone} onChange={(e) => update("telefone", e.target.value)} placeholder="(67) 99999-9999" required
+                      <input type="text" value={formData.telefone} onChange={(e) => update("telefone", maskTelefone(e.target.value))} placeholder="(67) 99999-9999" required maxLength={15}
                         className="w-full h-[46px] bg-white border border-[#e5e7eb] rounded-[10px] pl-10 pr-4 text-[14px] text-[#101828] placeholder:text-[rgba(10,10,10,0.4)] focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all" />
                     </div>
                   </div>

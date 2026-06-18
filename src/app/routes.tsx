@@ -12,42 +12,31 @@ import { CadastroOcorrenciaPage } from "./components/CadastroOcorrenciaPage";
 import { OrdensServicoPage } from "./components/OrdensServicoPage";
 import { RelatoriosPage } from "./components/RelatoriosPage";
 import { ConfiguracoesPage } from "./components/ConfiguracoesPage";
+import { NotFoundPage } from "./components/NotFoundPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    Component: LoginPage,
-  },
-  {
-    path: "/registro",
-    Component: RegisterPage,
-  },
-  {
-    path: "/esqueceu-senha",
-    Component: ForgotPasswordPage,
-  },
-  {
-    path: "/verificar-codigo",
-    Component: VerifyCodePage,
-  },
-  {
-    path: "/redefinir-senha",
-    Component: ResetPasswordPage,
-  },
-  {
-    path: "/senha-redefinida",
-    Component: PasswordResetSuccessPage,
-  },
+  { path: "/", Component: LoginPage },
+  { path: "/registro", Component: RegisterPage },
+  { path: "/esqueceu-senha", Component: ForgotPasswordPage },
+  { path: "/verificar-codigo", Component: VerifyCodePage },
+  { path: "/redefinir-senha", Component: ResetPasswordPage },
+  { path: "/senha-redefinida", Component: PasswordResetSuccessPage },
   {
     path: "/dashboard",
-    Component: AppShell,
+    element: (
+      <ProtectedRoute>
+        <AppShell/>
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, Component: DashboardLayout },
       { path: "ocorrencias", Component: OcorrenciasPage },
-      { path: "ocorrencias/nova", Component: CadastroOcorrenciaPage }, // ← NOVA ROTA
+      { path: "ocorrencias/nova", Component: CadastroOcorrenciaPage },
       { path: "ordens", Component: OrdensServicoPage },
       { path: "relatorios", Component: RelatoriosPage },
       { path: "configuracoes", Component: ConfiguracoesPage },
     ],
   },
+  { path: "*", Component: NotFoundPage },
 ]);
